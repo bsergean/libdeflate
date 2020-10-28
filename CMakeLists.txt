@@ -23,8 +23,7 @@ option(DEFLATE_FREESTANDING "build a freestanding library, i.e. a library that d
                              and memcpy(). All users will need to call
                              libdeflate_set_memory_allocator()." OFF)
 
-option(DEFLATE_BUILD_PROGRAMS "Build example and programs, just a gzip
-                               clone right now" OFF)
+option(DEFLATE_BUILD_TEST_PROGRAMS "Build test programs" OFF)
 
 # Source code
 set(LIBDEFLATE_SOURCES
@@ -86,6 +85,8 @@ set(LIBDEFLATE_HEADERS
 add_library(deflate)
 add_library(deflate::deflate ALIAS deflate)
 
+set_target_properties(deflate PROPERTIES VERSION 0.0.0 SOVERSION 0)
+
 target_sources(deflate PRIVATE ${LIBDEFLATE_SOURCES}
                                ${LIBDEFLATE_HEADERS})
 
@@ -146,30 +147,38 @@ install(EXPORT deflate
         NAMESPACE deflate::
         DESTINATION lib/cmake/deflate)
 
-if (DEFLATE_BUILD_PROGRAMS)
+if (DEFLATE_BUILD_TEST_PROGRAMS)
+  set(TEST_PROGRAMS_DEFINITIONS _POSIX_C_SOURCE=200809L
+	                        _FILE_OFFSET_BITS=64
+	                        HAVE_CONFIG_H)
+
+  set(TEST_PROGRAMS_COMMON_SRC programs/prog_util.c
+                               programs/tgetopt.c)
   # gzip
   add_executable(gzip)
   target_sources(gzip PRIVATE programs/gzip.c
-                              programs/prog_util.c
-                              programs/tgetopt.c)
+                              ${TEST_PROGRAMS_COMMON_SRC})
   target_include_directories(gzip PRIVATE programs)
   target_link_libraries(gzip deflate)
+  target_compile_definitions(gzip PRIVATE ${TEST_PROGRAMS_DEFINITIONS})
 
+  if (0)
   # benchmark
   add_executable(benchmark)
   target_sources(benchmark PRIVATE programs/benchmark.c
                                    programs/test_util.c
-                                   programs/prog_util.c
-                                   programs/tgetopt.c)
+                                   ${TEST_PROGRAMS_COMMON_SRC})
   target_include_directories(benchmark PRIVATE programs)
   target_link_libraries(benchmark deflate z)
+  target_compile_definitions(benchmark PRIVATE ${TEST_PROGRAMS_DEFINITIONS})
 
   # checksum
   add_executable(checksum)
   target_sources(checksum PRIVATE programs/checksum.c
                                   programs/test_util.c
-                                  programs/prog_util.c
-                                  programs/tgetopt.c)
+                                  ${TEST_PROGRAMS_COMMON_SRC})
   target_include_directories(checksum PRIVATE programs)
   target_link_libraries(checksum deflate z)
+  target_compile_definitions(checksum PRIVATE ${TEST_PROGRAMS_DEFINITIONS})
+  endif()
 endif()

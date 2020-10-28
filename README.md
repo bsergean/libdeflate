@@ -154,9 +154,11 @@ To build the library locally, run the following commands:
     cmake ..
     make
 
-To build also the example programs, just add the DEFLATE_BUILD_PROGRAMS option.
+`make VERBOSE=1` will show all executed commands.
 
-    cmake -DDEFLATE_BUILD_PROGRAM=1 ..
+To build also the example programs, just add the DEFLATE_BUILD_TEST_PROGRAMS option.
+
+    cmake -DDEFLATE_BUILD_TEST_PROGRAMS=1 ..
     make
 
 The programs will be found under the build folder
