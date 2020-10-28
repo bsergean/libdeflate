@@ -147,14 +147,33 @@ Or to build 32-bit binaries, do the same but use "MSYS2 MinGW 32-bit" instead.
 
 ### Using CMake
 
-To build the library locally.
+To build the library locally, run the following commands:
 
     mkdir build
     cd build
     cmake ..
     make
 
-To use the library directly in your own project, thanks to CMake FetchContent.
+To build also the example programs, just add the DEFLATE_BUILD_PROGRAMS option.
+
+    cmake -DDEFLATE_BUILD_PROGRAM=1 ..
+    make
+
+The programs will be found under the build folder
+
+    $ echo foo | build/benchmark
+    Benchmarking DEFLATE compression:
+        Compression level: 6
+        Chunk size: 1048576
+        Wrapper: None
+        Compression engine: libdeflate
+        Decompression engine: libdeflate
+    Processing standard input...
+        Compressed 4 => 4 bytes (100.000%)
+        Compression time: 0 ms (4 MB/s)
+        Decompression time: 0 ms (4 MB/s)
+
+To use the library directly in your own project, thanks to CMake FetchContent, using those CMake snippets.
 
     include(FetchContent)
     FetchContent_Declare(deflate

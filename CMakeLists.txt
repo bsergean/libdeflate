@@ -147,8 +147,29 @@ install(EXPORT deflate
         DESTINATION lib/cmake/deflate)
 
 if (DEFLATE_BUILD_PROGRAMS)
+  # gzip
   add_executable(gzip)
-  target_sources(gzip PRIVATE programs/gzip.c programs/prog_util.c programs/tgetopt.c)
-  target_include_directories(deflate PRIVATE programs)
+  target_sources(gzip PRIVATE programs/gzip.c
+                              programs/prog_util.c
+                              programs/tgetopt.c)
+  target_include_directories(gzip PRIVATE programs)
   target_link_libraries(gzip deflate)
+
+  # benchmark
+  add_executable(benchmark)
+  target_sources(benchmark PRIVATE programs/benchmark.c
+                                   programs/test_util.c
+                                   programs/prog_util.c
+                                   programs/tgetopt.c)
+  target_include_directories(benchmark PRIVATE programs)
+  target_link_libraries(benchmark deflate z)
+
+  # checksum
+  add_executable(checksum)
+  target_sources(checksum PRIVATE programs/checksum.c
+                                  programs/test_util.c
+                                  programs/prog_util.c
+                                  programs/tgetopt.c)
+  target_include_directories(checksum PRIVATE programs)
+  target_link_libraries(checksum deflate z)
 endif()
