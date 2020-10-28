@@ -140,6 +140,7 @@ install(TARGETS deflate
         PUBLIC_HEADER DESTINATION include/
 )
 
+# This is required to work with FetchContent
 install(EXPORT deflate
         FILE deflate-config.cmake
         NAMESPACE deflate::

@@ -145,6 +145,27 @@ and run the following commands:
 
 Or to build 32-bit binaries, do the same but use "MSYS2 MinGW 32-bit" instead.
 
+### Using CMake
+
+To build the library locally.
+
+    mkdir build
+    cd build
+    cmake ..
+    make
+
+To use the library directly in your own project, thanks to CMake FetchContent.
+
+    include(FetchContent)
+    FetchContent_Declare(deflate
+        GIT_REPOSITORY "https://github.com/ebiggers/libdeflate"
+        GIT_TAG "master" # Or an explicit tag
+        GIT_SHALLOW 1) 
+
+    FetchContent_MakeAvailable(deflate)
+
+    target_link_libraries(my_library_or_exe deflate)
+
 # API
 
 libdeflate has a simple API that is not zlib-compatible.  You can create
