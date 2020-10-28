@@ -140,6 +140,11 @@ install(TARGETS deflate
         PUBLIC_HEADER DESTINATION include/
 )
 
+install(EXPORT deflate
+        FILE deflate-config.cmake
+        NAMESPACE deflate::
+        DESTINATION lib/cmake/deflate)
+
 if (DEFLATE_BUILD_PROGRAMS)
   add_executable(gzip)
   target_sources(gzip PRIVATE programs/gzip.c programs/prog_util.c programs/tgetopt.c)
