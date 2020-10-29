@@ -24,6 +24,7 @@ option(DEFLATE_FREESTANDING "build a freestanding library, i.e. a library that d
                              libdeflate_set_memory_allocator()." OFF)
 
 option(DEFLATE_BUILD_TEST_PROGRAMS "Build test programs" OFF)
+option(DEFLATE_TEST_SUPPORT__DO_NOT_USE "Don't use this option except for testing; it isn't a stable interface." OFF)
 
 # Source code
 set(LIBDEFLATE_SOURCES
@@ -126,6 +127,10 @@ endif()
 if (FREESTANDING)
   target_compile_definitions(deflate PRIVATE FREESTANDING)
   target_compile_options(deflate PRIVATE -ffreestanding -nostdlib)
+endif()
+
+if (DEFLATE_TEST_SUPPORT__DO_NOT_USE)
+  target_compile_definitions(deflate PRIVATE TEST_SUPPORT__DO_NOT_USE)
 endif()
 
 target_include_directories(deflate PUBLIC

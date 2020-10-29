@@ -2,9 +2,14 @@ set(TEST_PROGRAMS_DEFINITIONS _POSIX_C_SOURCE=200809L
                               _FILE_OFFSET_BITS=64
                               HAVE_CONFIG_H)
 
+if (DEFLATE_TEST_SUPPORT__DO_NOT_USE)
+  list(APPEND TEST_PROGRAMS_DEFINITIONS TEST_SUPPORT__DO_NOT_USE)
+endif()
+
 # Small library for common code
 add_library(programs)
 target_sources(programs PRIVATE prog_util.c test_util.c tgetopt.c)
+target_compile_definitions(programs PRIVATE ${TEST_PROGRAMS_DEFINITIONS})
 target_link_libraries(programs deflate)
 
 # test checksums
@@ -12,6 +17,7 @@ set(PROGRAM_TARGET_NAMES
   gzip
   benchmark
   checksum
+  test_checksums
   test_custom_malloc
   test_incomplete_codes
   test_litrunlen_overflow

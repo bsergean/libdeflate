@@ -8,7 +8,8 @@ set -eu
 
 run_cmd() {
 	echo "$WRAPPER $*"
-	$WRAPPER "$@" > /dev/null
+	$WRAPPER "build/programs/$@" > /dev/null
+	# $WRAPPER "$@" > /dev/null
 }
 
 for prog in ./test_*; do
