@@ -31,7 +31,7 @@ trap 'rm -r "$TMPDIR"' EXIT
 
 MAKE="make -j$(getconf _NPROCESSORS_ONLN)"
 
-CC_VERSION=$($CC --version | head -1)
+CC_VERSION=$($CC --version | head -n 1)
 
 ARCH=$(uname -m)
 
@@ -48,7 +48,7 @@ INDENT=0
 
 log() {
 	echo -n "[$(date)] "
-	head -c $(( INDENT * 4 )) /dev/zero | tr '\0' ' '
+	# head -c $(( INDENT * 4 )) /dev/zero | tr '\0' ' '
 	echo "$@"
 }
 

@@ -148,37 +148,5 @@ install(EXPORT deflate
         DESTINATION lib/cmake/deflate)
 
 if (DEFLATE_BUILD_TEST_PROGRAMS)
-  set(TEST_PROGRAMS_DEFINITIONS _POSIX_C_SOURCE=200809L
-	                        _FILE_OFFSET_BITS=64
-	                        HAVE_CONFIG_H)
-
-  set(TEST_PROGRAMS_COMMON_SRC programs/prog_util.c
-                               programs/tgetopt.c)
-  # gzip
-  add_executable(gzip)
-  target_sources(gzip PRIVATE programs/gzip.c
-                              ${TEST_PROGRAMS_COMMON_SRC})
-  target_include_directories(gzip PRIVATE programs)
-  target_link_libraries(gzip deflate)
-  target_compile_definitions(gzip PRIVATE ${TEST_PROGRAMS_DEFINITIONS})
-
-  if (0)
-  # benchmark
-  add_executable(benchmark)
-  target_sources(benchmark PRIVATE programs/benchmark.c
-                                   programs/test_util.c
-                                   ${TEST_PROGRAMS_COMMON_SRC})
-  target_include_directories(benchmark PRIVATE programs)
-  target_link_libraries(benchmark deflate z)
-  target_compile_definitions(benchmark PRIVATE ${TEST_PROGRAMS_DEFINITIONS})
-
-  # checksum
-  add_executable(checksum)
-  target_sources(checksum PRIVATE programs/checksum.c
-                                  programs/test_util.c
-                                  ${TEST_PROGRAMS_COMMON_SRC})
-  target_include_directories(checksum PRIVATE programs)
-  target_link_libraries(checksum deflate z)
-  target_compile_definitions(checksum PRIVATE ${TEST_PROGRAMS_DEFINITIONS})
-  endif()
+  add_subdirectory(programs)
 endif()
