@@ -11,7 +11,7 @@ run_cmd() {
 	$WRAPPER "$@" > /dev/null
 }
 
-for prog in `ls ./build/programs/test_*`; do
+for prog in ./build/programs/test_*; do
 	run_cmd "$prog"
 done
 

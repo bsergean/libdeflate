@@ -196,12 +196,12 @@ do_run_tests() {
 	if [ "${1:-}" != "--quick" ]; then
 		build_and_run_tests FREESTANDING=1
         # FIXME: test skipped for now in cmake mode.
-        test `uname` = Darwin || {
+        test $(uname) = "Darwin" || {
             verify_freestanding_build
         }
 	fi
     # FIXME: test skipped for now in cmake mode.
-    test `uname` = Darwin || {
+    test $(uname) = "Darwin" || {
         gzip_tests "$@"
     }
 }
@@ -308,7 +308,7 @@ run_tests() {
 	fi
 
     # FIXME: test skipped for now in cmake mode.
-	test `uname` = Darwin || {
+    test $(uname) = "Darwin" || {
         install_uninstall_tests
         check_symbol_prefixes
         test_use_shared_lib

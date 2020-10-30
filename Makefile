@@ -338,7 +338,10 @@ check:test_programs
 
 # Run the clang static analyzer.
 scan-build:
-	scan-build --status-bugs make all test_programs
+	mkdir -p build
+	cd build && \
+		scan-build cmake -DDEFLATE_BUILD_TEST_PROGRAMS=1 .. && \
+		scan-build --status-bugs make 
 
 # Run shellcheck on all shell scripts.
 shellcheck:
