@@ -21,7 +21,7 @@ if (DEFLATE_TEST_SUPPORT__DO_NOT_USE)
 endif()
 
 # Small library for common code
-add_library(programs)
+add_library(programs STATIC)
 target_sources(programs PRIVATE prog_util.c test_util.c tgetopt.c)
 target_compile_definitions(programs PRIVATE ${TEST_PROGRAMS_DEFINITIONS})
 target_link_libraries(programs deflate)
