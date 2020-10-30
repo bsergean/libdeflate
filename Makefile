@@ -364,6 +364,9 @@ clean:
 realclean: clean
 	rm -f tags cscope*
 
+cmake:
+	rm -rf build ; mkdir build ; (cd build && cmake -DDEFLATE_BUILD_TEST_PROGRAMS=1 .. && make)
+
 FORCE:
 
 .PHONY: all install uninstall test_programs check scan-build shellcheck help \

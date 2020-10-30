@@ -19,11 +19,19 @@ have_cpu_feature() {
 make_and_test() {
 	# Build the checksum program and tests.  Set the special test support
 	# flag to get support for LIBDEFLATE_DISABLE_CPU_FEATURES.
-	make "$@" TEST_SUPPORT__DO_NOT_USE=1 checksum test_checksums > /dev/null
+    if false ;
+    then
+        make "$@" TEST_SUPPORT__DO_NOT_USE=1 checksum test_checksums > /dev/null
+    else
+        # FIXME
+        # 1. Handle parameters passed in
+        rm -rf build ; mkdir build ; (cd build && cmake -DDEFLATE_TEST_SUPPORT__DO_NOT_USE=ON -DDEFLATE_BUILD_TEST_PROGRAMS=ON ../.. && make)
+    fi
 
 	# Run the checksum tests, for good measure.  (This isn't actually part
 	# of the benchmarking.)
-	./test_checksums > /dev/null
+    # FIXME disabled
+	# ./build/program/test_checksums > /dev/null
 }
 
 __do_benchmark() {

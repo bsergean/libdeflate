@@ -1,3 +1,17 @@
+
+# FIXME: it would be more portable to use cmake builtin function detection
+execute_process(
+    RESULT_VARIABLE 
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/programs
+    COMMAND bash ${PROJECT_SOURCE_DIR}/scripts/detect.sh
+    OUTPUT_FILE config.h
+    ERROR_VARIABLE env_ev
+)
+
+if(NOT env_rv STREQUAL "0")
+  message(FATAL_ERROR "detect script failed: ${env_ev}")
+endif()
+
 set(TEST_PROGRAMS_DEFINITIONS _POSIX_C_SOURCE=200809L
                               _FILE_OFFSET_BITS=64
                               HAVE_CONFIG_H)
