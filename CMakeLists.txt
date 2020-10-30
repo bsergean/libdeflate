@@ -120,8 +120,8 @@ target_compile_options(deflate PRIVATE ${lint-vla})
 target_compile_options(deflate PRIVATE ${lint-implicit-fallthrough})
 
 if (BUILD_SHARED_LIBS)
-  target_compile_options(deflate PRIVATE -fvisibility=hidden
-                                         -D_ANSI_SOURCE)
+  target_compile_options(deflate PRIVATE -fvisibility=hidden -D_ANSI_SOURCE)
+  set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 endif()
 
 if (FREESTANDING)

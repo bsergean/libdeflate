@@ -368,7 +368,7 @@ cmake:
 	rm -rf build ; mkdir build ; (cd build && cmake -DDEFLATE_BUILD_TEST_PROGRAMS=1 .. && make)
 
 cmake_shared_lib:
-	rm -rf build ; mkdir build ; (cd build && cmake -DBUILD_SHARED_LIBS=ON -DDEFLATE_BUILD_TEST_PROGRAMS=1 .. && make)
+	rm -rf build ; mkdir build ; (cd build && cmake -DBUILD_SHARED_LIBS=ON -DDEFLATE_BUILD_TEST_PROGRAMS=1 .. && make VERBOSE=1)
 
 FORCE:
 
