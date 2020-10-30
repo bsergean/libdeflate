@@ -43,8 +43,7 @@ set(PROGRAM_TARGET_NAMES
   test_trailing_bytes
 )
 foreach(PROGRAM_TARGET_NAME ${PROGRAM_TARGET_NAMES})
-  add_executable(${PROGRAM_TARGET_NAME})
-  target_sources(${PROGRAM_TARGET_NAME} PRIVATE ${PROGRAM_TARGET_NAME}.c ${TEST_PROGRAMS_COMMON_SRC})
+  add_executable(${PROGRAM_TARGET_NAME} ${PROGRAM_TARGET_NAME}.c)
   target_link_libraries(${PROGRAM_TARGET_NAME} programs deflate z)
   target_compile_definitions(${PROGRAM_TARGET_NAME} PRIVATE ${TEST_PROGRAMS_DEFINITIONS})
 endforeach()
