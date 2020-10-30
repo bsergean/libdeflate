@@ -143,7 +143,11 @@ build_and_run_tests() {
 		fi
 		log "Using LIBDEFLATE_DISABLE_CPU_FEATURES=$disable_str"
 		LIBDEFLATE_DISABLE_CPU_FEATURES="$disable_str" \
-		    sh ./scripts/exec_tests.sh > /dev/null
+		    bash ./scripts/exec_tests.sh > /dev/null
+
+        # FIXME
+        # Using sh to execute exec_tests.sh does not work for some reason
+        # but it works with bash
 	done
 	end
 }
