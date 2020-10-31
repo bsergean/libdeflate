@@ -161,9 +161,9 @@ To build also the example programs, just add the DEFLATE_BUILD_TEST_PROGRAMS opt
     cmake -DDEFLATE_BUILD_TEST_PROGRAMS=1 ..
     make
 
-The programs will be found under the build folder
+The programs will be found under the build/programs folder
 
-    $ echo foo | build/benchmark
+    $ echo foo | build/programs/benchmark
     Benchmarking DEFLATE compression:
         Compression level: 6
         Chunk size: 1048576
