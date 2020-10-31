@@ -1,16 +1,28 @@
 
-# FIXME: it would be more portable to use cmake builtin function detection
-execute_process(
-  RESULT_VARIABLE DETECT_RESULT_VARIABLE
-  WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/programs
-  COMMAND bash ${PROJECT_SOURCE_DIR}/scripts/detect.sh
-  OUTPUT_FILE config.h
-  ERROR_VARIABLE env_ev
-)
+# # FIXME: it would be more portable to use cmake builtin function detection
+# execute_process(
+#   RESULT_VARIABLE DETECT_RESULT_VARIABLE
+#   WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/programs
+#   COMMAND bash ${PROJECT_SOURCE_DIR}/scripts/detect.sh
+#   OUTPUT_FILE config.h
+#   ERROR_VARIABLE env_ev
+# )
+# 
+# if(NOT ${DETECT_RESULT_VARIABLE} STREQUAL "0")
+#   message(FATAL_ERROR "detect script failed: ${DETECT_RESULT_VARIABLE}")
+# endif()
 
-if(NOT ${DETECT_RESULT_VARIABLE} STREQUAL "0")
-  message(FATAL_ERROR "detect script failed: ${DETECT_RESULT_VARIABLE}")
-endif()
+# See 
+# https://go.googlesource.com/gollvm/+/master/cmake/modules/ConfigSetup.cmake
+#
+check_symbol_exists(clock_gettime "time.h" HAVE_CLOCK_GETTIME)
+check_symbol_exists(futimens "fcntl.h;sys/stat.h" HAVE_FUTIMENS)
+check_symbol_exists(futimes "sys/time.h" HAVE_FUTIMES)
+check_symbol_exists(posix_fadvise "fcntl.h" HAVE_POSIX_FADVISE)
+check_symbol_exists(posix_madvise "sys/mman.h" HAVE_POSIX_MADVISE)
+
+configure_file(${PROJECT_SOURCE_DIR}/programs/config.h.in 
+               ${PROJECT_SOURCE_DIR}/programs/config.h)
 
 set(TEST_PROGRAMS_DEFINITIONS _POSIX_C_SOURCE=200809L
                               _FILE_OFFSET_BITS=64
