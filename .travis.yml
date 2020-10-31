@@ -10,5 +10,5 @@ jobs:
       - sudo apt-get install -y libz-dev valgrind
       - curl -O https://cmake.org/files/v3.5/cmake-3.5.1-Linux-x86_64.tar.gz
       - tar zxvf cmake-3.5.1-Linux-x86_64.tar.gz
-      - sudo cp cmake-3.5.1-Linux-x86_64/bin/cmake /usr/bin/cmake
+      - sudo cp -rf cmake-3.5.1-Linux-x86_64/* /usr/
       script: scripts/run_tests.sh
