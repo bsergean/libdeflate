@@ -1,25 +1,31 @@
 
-# # FIXME: it would be more portable to use cmake builtin function detection
-# execute_process(
-#   RESULT_VARIABLE DETECT_RESULT_VARIABLE
-#   WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/programs
-#   COMMAND bash ${PROJECT_SOURCE_DIR}/scripts/detect.sh
-#   OUTPUT_FILE config.h
-#   ERROR_VARIABLE env_ev
-# )
-# 
-# if(NOT ${DETECT_RESULT_VARIABLE} STREQUAL "0")
-#   message(FATAL_ERROR "detect script failed: ${DETECT_RESULT_VARIABLE}")
-# endif()
-
-# See 
+# For examples of checking symbols existence, see
 # https://go.googlesource.com/gollvm/+/master/cmake/modules/ConfigSetup.cmake
 #
+include(CheckSymbolExists)
+
 check_symbol_exists(clock_gettime "time.h" HAVE_CLOCK_GETTIME)
 check_symbol_exists(futimens "fcntl.h;sys/stat.h" HAVE_FUTIMENS)
 check_symbol_exists(futimes "sys/time.h" HAVE_FUTIMES)
 check_symbol_exists(posix_fadvise "fcntl.h" HAVE_POSIX_FADVISE)
 check_symbol_exists(posix_madvise "sys/mman.h" HAVE_POSIX_MADVISE)
+
+check_c_source_compiles("#include <sys/types.h>
+			 #include <sys/stat.h>
+                         int main() { struct stat st; (void) st.atim; }"
+                         HAVE_STAT_NANOSECOND_PRECISION)
+
+check_c_source_compiles("#include <sys/types.h>
+                        #include <sys/stat.h>
+                        int main() { struct stat st; (void) st.st_atimespec; }"
+                        HAVE_STAT_NANOSECOND_PRECISION_MACOS)
+
+if (${HAVE_STAT_NANOSECOND_PRECISION_MACOS})
+  set(HAVE_STAT_NANOSECOND_PRECISION 1)
+  set(st_atim st_atimensec)
+  set(st_mtim st_mtimensec)
+  set(st_ctim st_ctimensec)
+endif()
 
 configure_file(${PROJECT_SOURCE_DIR}/programs/config.h.in 
                ${PROJECT_SOURCE_DIR}/programs/config.h)
