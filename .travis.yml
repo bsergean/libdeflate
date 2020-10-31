@@ -103,19 +103,16 @@ jobs:
       os: osx
       osx_image: xcode11
       before_install:
-      script: make all check
 
     - name: macOS, xcode9.4
       os: osx
       osx_image: xcode9.4
       before_install:
-      script: make all check
 
     - name: macOS, xcode7.3
       os: osx
       osx_image: xcode7.3
       before_install:
-      script: make all check
 
     - name: Windows, MinGW
       os: windows
