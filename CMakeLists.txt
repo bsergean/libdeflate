@@ -122,8 +122,12 @@ target_compile_options(deflate PRIVATE ${lint-implicit-fallthrough})
 # The CFLAGS environment variable is read and handled automatically by cmake
 
 if (BUILD_SHARED_LIBS)
-  target_compile_options(deflate PRIVATE -fvisibility=hidden -D_ANSI_SOURCE)
-  set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+  target_compile_definitions(deflate PRIVATE _ANSI_SOURCE)
+  set_target_properties(deflate PROPERTIES C_VISIBILITY_PRESET hidden)
+
+  if (WIN32)
+    target_compile_definitions(deflate PUBLIC LIBDEFLATE_DLL)
+  endif()
 endif()
 
 if (FREESTANDING)
