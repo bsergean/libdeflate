@@ -48,11 +48,20 @@ target_sources(programs PRIVATE prog_util.c test_util.c tgetopt.c)
 target_compile_definitions(programs PRIVATE ${TEST_PROGRAMS_DEFINITIONS})
 target_link_libraries(programs deflate)
 
-# test checksums
+# cli
 set(PROGRAM_TARGET_NAMES
   gzip
   benchmark
   checksum
+)
+foreach(PROGRAM_TARGET_NAME ${PROGRAM_TARGET_NAMES})
+  add_executable(${PROGRAM_TARGET_NAME} ${PROGRAM_TARGET_NAME}.c)
+  target_link_libraries(${PROGRAM_TARGET_NAME} programs deflate z)
+  target_compile_definitions(${PROGRAM_TARGET_NAME} PRIVATE ${TEST_PROGRAMS_DEFINITIONS})
+endforeach()
+
+# tests
+set(TEST_TARGET_NAMES
   test_checksums
   test_custom_malloc
   test_incomplete_codes
@@ -60,8 +69,10 @@ set(PROGRAM_TARGET_NAMES
   test_slow_decompression
   test_trailing_bytes
 )
-foreach(PROGRAM_TARGET_NAME ${PROGRAM_TARGET_NAMES})
-  add_executable(${PROGRAM_TARGET_NAME} ${PROGRAM_TARGET_NAME}.c)
-  target_link_libraries(${PROGRAM_TARGET_NAME} programs deflate z)
-  target_compile_definitions(${PROGRAM_TARGET_NAME} PRIVATE ${TEST_PROGRAMS_DEFINITIONS})
+foreach(TEST_TARGET_NAME ${TEST_TARGET_NAMES})
+  add_executable(${TEST_TARGET_NAME} ${TEST_TARGET_NAME}.c)
+  target_link_libraries(${TEST_TARGET_NAME} programs deflate z)
+  target_compile_definitions(${TEST_TARGET_NAME} PRIVATE ${TEST_PROGRAMS_DEFINITIONS})
+
+  add_test(NAME ${TEST_TARGET_NAME} COMMAND ${TEST_TARGET_NAME})
 endforeach()

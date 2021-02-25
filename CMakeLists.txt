@@ -159,5 +159,6 @@ install(EXPORT deflate
         DESTINATION lib/cmake/deflate)
 
 if (DEFLATE_BUILD_TEST_PROGRAMS)
+  enable_testing()
   add_subdirectory(programs)
 endif()
