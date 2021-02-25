@@ -338,10 +338,7 @@ check:test_programs
 
 # Run the clang static analyzer.
 scan-build:
-	mkdir -p build
-	cd build && \
-		scan-build cmake -DDEFLATE_BUILD_TEST_PROGRAMS=1 .. && \
-		scan-build --status-bugs make 
+	scan-build --status-bugs make all test_programs
 
 # Run shellcheck on all shell scripts.
 shellcheck:
@@ -366,12 +363,6 @@ clean:
 
 realclean: clean
 	rm -f tags cscope*
-
-cmake:
-	rm -rf build ; mkdir build ; (cd build && cmake -DDEFLATE_BUILD_TEST_PROGRAMS=1 .. && make)
-
-cmake_shared_lib:
-	rm -rf build ; mkdir build ; (cd build && cmake -DBUILD_SHARED_LIBS=ON -DDEFLATE_BUILD_TEST_PROGRAMS=1 .. && make VERBOSE=1)
 
 FORCE:
 

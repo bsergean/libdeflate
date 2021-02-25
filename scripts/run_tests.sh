@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 #
 # Test script for libdeflate
 
@@ -31,7 +31,7 @@ trap 'rm -r "$TMPDIR"' EXIT
 
 MAKE="make -j$(getconf _NPROCESSORS_ONLN)"
 
-CC_VERSION=$($CC --version | head -n 1)
+CC_VERSION=$($CC --version | head -1)
 
 ARCH=$(uname -m)
 
@@ -48,7 +48,7 @@ INDENT=0
 
 log() {
 	echo -n "[$(date)] "
-	# head -c $(( INDENT * 4 )) /dev/zero | tr '\0' ' '
+	head -c $(( INDENT * 4 )) /dev/zero | tr '\0' ' '
 	echo "$@"
 }
 
@@ -104,14 +104,7 @@ build_and_run_tests() {
 
 	# Build libdeflate, including the test programs.  Set the special test
 	# support flag to get support for LIBDEFLATE_DISABLE_CPU_FEATURES.
-    if false ; 
-    then
-        $MAKE "$@" TEST_SUPPORT__DO_NOT_USE=1 all test_programs > /dev/null
-    else
-        # FIXME
-        # 1. Handle parameters passed in
-        rm -rf build ; mkdir build ; (cd build && cmake -DDEFLATE_TEST_SUPPORT__DO_NOT_USE=ON -DDEFLATE_BUILD_TEST_PROGRAMS=ON .. && make)
-    fi
+	$MAKE "$@" TEST_SUPPORT__DO_NOT_USE=1 all test_programs > /dev/null
 
 	# When not using -march=native, run the tests multiple times with
 	# different combinations of CPU features disabled.  This is needed to
@@ -143,11 +136,7 @@ build_and_run_tests() {
 		fi
 		log "Using LIBDEFLATE_DISABLE_CPU_FEATURES=$disable_str"
 		LIBDEFLATE_DISABLE_CPU_FEATURES="$disable_str" \
-		    bash ./scripts/exec_tests.sh > /dev/null
-
-        # FIXME
-        # Using sh to execute exec_tests.sh does not work for some reason
-        # but it works with bash
+		    sh ./scripts/exec_tests.sh > /dev/null
 	done
 	end
 }
@@ -195,15 +184,9 @@ do_run_tests() {
 	build_and_run_tests "$@"
 	if [ "${1:-}" != "--quick" ]; then
 		build_and_run_tests FREESTANDING=1
-        # FIXME: test skipped for now in cmake mode.
-        test "$(uname)" = "Darwin" || {
-            verify_freestanding_build
-        }
+		verify_freestanding_build
 	fi
-    # FIXME: test skipped for now in cmake mode.
-    test "$(uname)" = "Darwin" || {
-        gzip_tests "$@"
-    }
+	gzip_tests "$@"
 }
 
 check_symbol_prefixes() {
@@ -307,12 +290,9 @@ run_tests() {
 		log "Skipping CFI tests because compiler ($CC_VERSION) doesn't support CFI"
 	fi
 
-    # FIXME: test skipped for now in cmake mode.
-    test "$(uname)" = "Darwin" || {
-        install_uninstall_tests
-        check_symbol_prefixes
-        test_use_shared_lib
-    }
+	install_uninstall_tests
+	check_symbol_prefixes
+	test_use_shared_lib
 }
 
 ###############################################################################
