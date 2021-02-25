@@ -147,6 +147,8 @@ Or to build 32-bit binaries, do the same but use "MSYS2 MinGW 32-bit" instead.
 
 ### Using CMake
 
+The CMake scripts are maintained by the community and not officially supported.
+
 To build the library locally, run the following commands:
 
     mkdir build
@@ -174,6 +176,29 @@ The programs will be found under the build/programs folder
         Compressed 4 => 4 bytes (100.000%)
         Compression time: 0 ms (4 MB/s)
         Decompression time: 0 ms (4 MB/s)
+
+You can execute all test programs through cmake and ctest with:
+
+    make
+    make test
+    Running tests...
+    Test project /.../libdeflate/build
+        Start 1: test_checksums
+    1/6 Test #1: test_checksums ...................   Passed    0.25 sec
+        Start 2: test_custom_malloc
+    2/6 Test #2: test_custom_malloc ...............   Passed    0.24 sec
+        Start 3: test_incomplete_codes
+    3/6 Test #3: test_incomplete_codes ............   Passed    0.22 sec
+        Start 4: test_litrunlen_overflow
+    4/6 Test #4: test_litrunlen_overflow ..........   Passed    0.24 sec
+        Start 5: test_slow_decompression
+    5/6 Test #5: test_slow_decompression ..........   Passed    0.21 sec
+        Start 6: test_trailing_bytes
+    6/6 Test #6: test_trailing_bytes ..............   Passed    0.21 sec
+
+    100% tests passed, 0 tests failed out of 6
+
+    Total Test time (real) =   1.37 sec
 
 To use the library directly in your own project, thanks to CMake FetchContent, using those CMake snippets.
 
